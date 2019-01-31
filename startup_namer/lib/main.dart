@@ -19,11 +19,15 @@ class RandomWordsState extends State<RandomWords> {
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text('Startup Name Generator'),
+        title: new Text('Startup Name Generator'),
+        actions: <Widget>[
+          new IconButton(icon: const Icon(Icons.list), onPressed: _pushSaved),
+        ],
       ),
       body: _buildSuggestions(),
     );
   }//build
+
   /*
     name: _buildSuggestions
 
@@ -68,6 +72,45 @@ class RandomWordsState extends State<RandomWords> {
       }, //onTap
     );
   }
+
+  /*
+  name: _pushSaved
+  desc: used for app bar, Navigator Stack
+   */
+  void _pushSaved() {
+    /*
+     * pushes the route to the Navigator Stack
+     */
+    Navigator.of(context).push(
+      new MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          final Iterable<ListTile> tiles = _saved.map(
+                (WordPair pair) {
+                  return new ListTile(
+                    title: new Text(
+                      pair.asPascalCase,
+                      style: _biggerFont,
+                ),
+              ); //ListTile
+            },//WordPair
+          );
+          final List<Widget> divided = ListTile
+              .divideTiles(
+                context: context,
+                tiles: tiles,
+          )
+              .toList();
+
+          return new Scaffold(
+            appBar: new AppBar(
+              title: const Text('Saved Suggestions'),
+            ), //appBar
+            body: new ListView(children: divided),
+          ); //Scaffold
+        },
+      ),
+    );
+  } //_pushSaved()
 }//RandomWordsState
 
 class RandomWords extends StatefulWidget {
