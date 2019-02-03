@@ -113,6 +113,18 @@ class RandomWordsState extends State<RandomWords> {
   } //_pushSaved()
 }//RandomWordsState
 
+/*
+ * name: RandomWords
+ * type: class
+ * desc:
+ *  extends StatefulWidget meaning class RandomWords is a subclass of Stateful Widget
+ *  Stateful Widget:
+ *    *State can be read Synchronously when the widget is built and can change
+ *     during the lifetime of the widget.
+ *     *Stateful Widgets are useful when interface needs to change dynamically (internal clock)
+ *  creates a mutable(changeable) state of type RandomWordsState and passes in a new object
+ *  of RandomWordsState into the new state.
+ */
 class RandomWords extends StatefulWidget {
   @override
   RandomWordsState createState() => new RandomWordsState();
@@ -124,8 +136,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Function returns a Material App
-    return MaterialApp(
+    return new MaterialApp(
         title: 'Startup Name Generator',
+        theme: new ThemeData(
+          primaryColor: Colors.white,
+        ),
         home: RandomWords(),
       );
   }
