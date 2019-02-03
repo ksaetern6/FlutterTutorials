@@ -1,43 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart' show debugPaintSizeEnabled;
 
 void main() {
-  debugPaintSizeEnabled = true; // Remove to suppress visual layout
-  runApp(MyApp());
+  runApp(MaterialApp(
+    title: 'My app', //used by OS task switcher?
+    home: MyScaffold(),
+  ));
 }
 
-class MyApp extends StatelessWidget {
+class MyAppBar extends StatelessWidget {
+  MyAppBar({this.title});
+
+  final Widget title;
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter layout demo',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Flutter layout demo'),
-        ),
-        // Change to buildColumn() for the other column example
-        body: Center(child: buildRow()),
+    return Container(
+      height: 56.0, // in logical pixels
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      decoration: BoxDecoration(color: Colors.blue[500]),
+      // Row is a horizontal, linear layout.
+      child: Row(
+        // <Widget> is the type of items in the list.
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.menu),
+            tooltip: 'Navigation menu',
+            onPressed: null, // null disables the button
+          ),
+          // Expanded expands its child to fill the available space.
+          Expanded(
+            child: title,
+          ),
+          IconButton(
+            icon: Icon(Icons.search),
+            tooltip: 'Search',
+            onPressed: null,
+          ),
+        ],
       ),
     );
   }
+}//MyAppBar
 
-  Widget buildRow() =>
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Image.asset('images/pic1.jpg'),
+class MyScaffold extends StatelessWidget {
+  @override
+  Widget build(BuildContext context){
+    // Material is a conceptual piece of paper on which the UI appears.
+    return Material(
+      child: Column(
+        children: <Widget>[
+          MyAppBar(
+            title: Text(
+              'Example Text',
+              style: Theme.of(context).primaryTextTheme.title,
             ),
-            Expanded(
-              flex: 2,
-              child: Image.asset('images/pic2.jpg'),
+          ),
+          Expanded(
+            child: Center(
+              child: Text('Hello World'),
             ),
-            Expanded(
-              child: Image.asset('images/pic3.jpg'),
-            ),
+          ),
         ],
-      );
-} //MyApp
+      ),
+    );
+  }
+}
 
 
 
