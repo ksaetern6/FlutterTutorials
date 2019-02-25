@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'note_list.dart';
-import 'note_detail.dart';
+import 'note_list.dart'; //NoteList
+import 'note_detail.dart'; //NoteDetail
 
 void main() => runApp(MyApp());
 
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepPurple
       ),
       //
-      home: NoteDetail(),
+      home: NoteList(),
     );
   }
 }

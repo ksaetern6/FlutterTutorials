@@ -1,26 +1,52 @@
 import "package:flutter/material.dart";
 
 class NoteDetail extends StatefulWidget {
-  
+
+  String appBarTitle;
+
+  //constructor to pass Scaffold Title based on button click
+  NoteDetail(this.appBarTitle);
+
   @override
-  NoteDetailState createState() => NoteDetailState();
+  NoteDetailState createState() => NoteDetailState(this.appBarTitle);
 }
 
 class NoteDetailState extends State<NoteDetail>{
 
   static var _priorities = ['High', 'Low'];
+  String appBarTitle;
+
   //control values entered by the User
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
+  //Constructor
+  NoteDetailState(this.appBarTitle);
   @override
   Widget build(BuildContext context) {
 
     TextStyle textStyle = Theme.of(context).textTheme.title;
 
-    return Scaffold(
+    /*
+    We wrap everything in WillPopScope so the page can pop off the Stack
+    when pressing the back button and to control how we can navigate backwards
+     */
+    return WillPopScope(
+
+      onWillPop: () {
+        //Write some code when user presses back nav bar on device
+        moveToLastScreen();
+      },
+
+      child: Scaffold(
       appBar: AppBar(
-        title: Text("Edit note"),
+        title: Text(appBarTitle),
+        leading: IconButton(icon: Icon(
+          Icons.arrow_back),
+            onPressed: () {
+              //Write some code when user presses back nav bar in AppBar
+              moveToLastScreen();
+            })
       ),
       body: Padding(
         padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
@@ -141,6 +167,11 @@ class NoteDetailState extends State<NoteDetail>{
         ),
       ),
 
-    );
-  }
+    ));
+  }//build
+
+  void moveToLastScreen() {
+    //pops the previous screen on the stack
+    Navigator.pop(context);
+  }//moveToLastScreen
 }
