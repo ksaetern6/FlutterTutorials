@@ -32,7 +32,7 @@ class Note {
   }
 
   set description(String newDescription){
-    if (newTitle.length <= 255) {
+    if (newDescription.length <= 255) {
       this._description = newDescription;
     }
   }

@@ -58,11 +58,8 @@ class DatabaseHelper {
   //execute statement to create database
   void _createDb(Database db, int newVersion) async {
 
-    await db.execute('CREATE TABLE $noteTable($colId INTEGER PRIMARY KEY AUTOINCREMENT,'
-        '$colDate TEXT,'
-        '$colDescription TEXT,'
-        '$colPriority INTEGER'
-        '$colDate TEXT)');
+    await db.execute('CREATE TABLE $noteTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, '
+        '$colDescription TEXT, $colPriority INTEGER, $colDate TEXT)');
   }
 
   //Fetch Operations: Get all note objects from database
@@ -72,9 +69,9 @@ class DatabaseHelper {
 
     //both statements are the same, first statement is using the raw query
     //second statement is using a function defined in sqflite (Helper function)
-    var result  = await db.rawQuery('SELECT * FROM  $noteTable'
-        'ORDER BY $colPriority ASC');
-    //var result  = await.db.query(noteTable, orderBy: '$colPriority ASC');
+    //var result  = await db.rawQuery('SELECT * FROM  $noteTable'
+      //  'ORDER BY $colPriority ASC');
+    var result  = await db.query(noteTable, orderBy: '$colPriority ASC');
 
     return result;
   }
@@ -101,7 +98,7 @@ class DatabaseHelper {
   //Delete Operation: Delete a Note object from database
   Future<int> deleteNote(int id) async {
     var db = await this.database;
-    int result = await db.rawDelete('DELETE FORM $noteTable WHERE $colId = $id');
+    int result = await db.rawDelete('DELETE FROM $noteTable WHERE $colId = $id');
     return result;
   }
 
@@ -114,5 +111,26 @@ class DatabaseHelper {
     int result = Sqflite.firstIntValue(x);
 
     return result;
+  }
+
+  //get the 'Map List' and convert it to 'Note List'
+  Future<List<Note>> getNoteList() async {
+
+    var noteMapList = await getNoteMapList(); // get mapList from database
+    int count = noteMapList.length; // count the number of map entries in db table
+
+    List<Note> noteList = List<Note>();
+
+    //for loop populates noteList from 'Map list'
+    for (int i = 0; i < count; i++) {
+      noteList.add(Note.fromMapObject(noteMapList[i]));
+    }
+
+    return noteList;
+  }
+  void deleteDB() async {
+    var databaseDirectory = await getApplicationDocumentsDirectory();
+    String path  = databaseDirectory.path + 'notes.db';
+    await deleteDatabase(path);
   }
 }
